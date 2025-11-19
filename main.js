@@ -1,16 +1,16 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 480,
-    height: 640,
+    width: 900,            // mais larguinho pra foto+texto
+    height: 680,           // altura maior pra caber tudo sem cortar
     resizable: false,
     fullscreenable: false,
     backgroundColor: "#0c1020",
-    title: "SorryLove",
-    titleBarStyle: "hiddenInset",
+    frame: false,          // sem moldura do sistema, usamos a rosa
     webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false
     }
@@ -18,6 +18,15 @@ function createWindow() {
 
   win.setMenuBarVisibility(false);
   win.loadFile(path.join(__dirname, "index.html"));
+
+  // IPC pros botões _ e X
+  ipcMain.on("minimize-window", () => {
+    win.minimize();
+  });
+
+  ipcMain.on("close-window", () => {
+    win.close();
+  });
 }
 
 app.whenReady().then(() => {
