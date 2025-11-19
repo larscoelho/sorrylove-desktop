@@ -29,6 +29,7 @@
     "files": [
       "index.html",
       "main.js",
+      "preload.js",
       "img/**/*",
       "audio/**/*",
       "package.json"
