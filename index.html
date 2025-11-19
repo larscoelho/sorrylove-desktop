@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SorryLove 💔➡️❤️</title>
+
+  <!-- Pixel font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0c1020;
+      font-family: "Press Start 2P", system-ui, sans-serif;
+      color: #fefefe;
+    }
+
+    /* JANELA ROSA */
+    .window {
+      width: 100%;
+      max-width: 420px;
+      border: 4px solid #000;
+      background-color: #ff66a3; /* retângulo rosa */
+      box-shadow: 0 0 0 4px #000, 0 8px 0 #000;
+      image-rendering: pixelated;
+    }
+
+    .window-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-bottom: 4px solid #000;
+    }
+
+    .window-title {
+      font-size: 10px;
+      text-shadow: 2px 2px 0 #000;
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-btn {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #000;
+      background-color: #f7e38f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #000;
+      padding-bottom: 2px;
+      transition: transform 0.05s, box-shadow 0.05s, filter 0.1s;
+    }
+
+    .window-btn.close {
+      background-color: #ff4d6a;
+    }
+
+    .window-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .window-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #000;
+    }
+
+    /* Conteúdo da janela */
+    .app {
+      width: 100%;
+      padding: 16px 16px 18px;
+      background-color: #181628;
+      border-top: 4px solid #000;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px 5px 0;
+      border: 3px solid #000;
+      background: #ff66a3;
+      color: #000;
+      font-size: 10px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #000;
+      transition: transform 0.05s, box-shadow 0.05s, filter 0.1s;
+    }
+
+    .btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #000;
+    }
+
+    .btn[disabled] {
+      opacity: 0.4;
+      cursor: default;
+      filter: grayscale(0.4);
+      box-shadow: 0 0 0 #000;
+      transform: none;
+    }
+
+    .photo-frame {
+      margin: 10px auto 10px;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 4 / 3;
+      border: 4px solid #000;
+      background: #000;
+      overflow: hidden;
+      image-rendering: pixelated;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+    }
+
+    .reason-text {
+      font-size: 9px;
+      line-height: 1.6;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .page-indicator {
+      margin-top: 8px;
+      font-size: 8px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 6px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .small {
+      font-size: 8px;
+      margin-top: 10px;
+      text-align: center;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="window-header">
+      <span class="window-title">SorryLove</span>
+      <div class="window-controls">
+        <button class="window-btn min" title="Minimize">_</button>
+        <button class="window-btn close" title="Close">X</button>
+      </div>
+    </div>
+
+    <div class="app">
+      <!-- TELA INICIAL -->
+      <div class="screen active" id="screen-start">
+        <div class="center">
+          <p class="reason-text">
+            This is a tiny pixel game about us. <br><br>
+            Press START to see some of the reasons why<br>
+            we should keep choosing each other. 💗
+          </p>
+          <button class="btn" id="btn-start">Start</button>
+        </div>
+      </div>
+
+      <!-- TELA DAS RAZÕES -->
+      <div class="screen" id="screen-reasons">
+        <div class="photo-frame">
+          <img id="reason-image" src="" alt="Us">
+        </div>
+        <p class="reason-text" id="reason-text"></p>
+
+        <div class="page-indicator" id="page-indicator"></div>
+
+        <div class="controls">
+          <button class="btn" id="btn-prev">Back</button>
+          <button class="btn" id="btn-next">Next</button>
+        </div>
+
+        <p class="small" id="final-message" style="display:none;">
+          No app will ever be enough to say I'm sorry<br>
+          and how much I love you. But this is a start. 💌
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎶 MÚSICA DE FUNDO -->
+  <audio id="bg-music" src="audio/music.mp3" loop></audio>
+
+  <script>
+    // 🧠 Razões do app
+    const reasons = [
+      {
+        image: "img/foto1.jpg",
+        text: "Because we still have so many places\nto travel to together."
+      },
+      {
+        image: "img/foto2.jpg",
+        text: "Because we still haven’t danced\nbachata together."
+      },
+      {
+        image: "img/foto3.jpg",
+        text: "Because I want to move to another country\nwith you and build our home from scratch."
+      },
+      {
+        image: "img/foto4.jpg",
+        text: "Because every future goal I have\nsomehow includes you."
+      },
+      {
+        image: "img/foto5.jpg",
+        text: "Because I want us to get through this moment\nand look back one day knowing it was worth it."
+      },
+      {
+        image: "img/foto6.jpg",
+        text: "Because I still need to bake you\nbetter and better pão de queijo."
+      },
+      {
+        image: "img/foto7.jpg",
+        text: "Because I still owe you a kiss\nwhere you keep the mustache\n(just for science)."
+      },
+      {
+        image: "img/foto8.jpg",
+        text: "Because I want to hug Bear again."
+      },
+      {
+        image: "img/foto9.jpg",
+        text: "Because I want to go camping with you again,\nthis time without waking you up\nin the middle of the night."
+      },
+      {
+        image: "img/foto10.jpg",
+        text: "Because loving you has made me\nwant to be a better person."
+      },
+      {
+        image: "img/foto11.jpg",
+        text: "Because I’ve never felt as safe with anyone\nas I do with you."
+      },
+      {
+        image: "img/foto12.jpg",
+        text: "Because you made a foreign country\nfeel like home just by being in it."
+      },
+      {
+        image: "img/foto13.jpg",
+        text: "Because love isn’t perfect,\nbut it’s real, and ours is worth fighting for."
+      },
+      {
+        image: "img/foto14.jpg",
+        text: "Because we deserve a chance to fix this\nside by side, not miles apart."
+      },
+      {
+        image: "img/foto15.jpg",
+        text: "Because everything I’m dreaming of building,\nI want to build with you."
+      },
+      {
+        image: "img/foto16.jpg",
+        text: "Because I choose you, even in the hard moments,\nand I hope you choose me too."
+      },
+      {
+        image: "img/foto17.jpg",
+        text: "Because I imagine us laughing about this\nin the future, saying,\n\"Damn, good thing we didn’t give up.\""
+      },
+      {
+        image: "img/foto18.jpg",
+        text: "Because we haven’t lived our best moments yet,\nnot even close."
+      }
+    ];
+
+    const screenStart = document.getElementById("screen-start");
+    const screenReasons = document.getElementById("screen-reasons");
+    const btnStart = document.getElementById("btn-start");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
+    const imgEl = document.getElementById("reason-image");
+    const textEl = document.getElementById("reason-text");
+    const pageIndicator = document.getElementById("page-indicator");
+    const finalMessage = document.getElementById("final-message");
+    const music = document.getElementById("bg-music");
+
+    const winMin = document.querySelector(".window-btn.min");
+    const winClose = document.querySelector(".window-btn.close");
+    const appEl = document.querySelector(".app");
+
+    let currentIndex = 0;
+    let musicStarted = false;
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function updateReason() {
+      const item = reasons[currentIndex];
+      imgEl.src = item.image;
+      textEl.textContent = item.text;
+      pageIndicator.textContent = `Reason ${currentIndex + 1} / ${reasons.length}`;
+
+      btnPrev.disabled = currentIndex === 0;
+      btnNext.textContent = currentIndex === reasons.length - 1 ? "Finish" : "Next";
+      finalMessage.style.display = currentIndex === reasons.length - 1 ? "block" : "none";
+    }
+
+    btnStart.addEventListener("click", () => {
+      showScreen("screen-reasons");
+      currentIndex = 0;
+      updateReason();
+
+      if (!musicStarted) {
+        music.volume = 0.4;
+        music.play().catch(() => {
+          console.log("Autoplay blocked, but we tried 😅");
+        });
+        musicStarted = true;
+      }
+    });
+
+    btnPrev.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateReason();
+      }
+    });
+
+    btnNext.addEventListener("click", () => {
+      if (currentIndex < reasons.length - 1) {
+        currentIndex++;
+        updateReason();
+      } else {
+        // Última razão → tela final
+        showFinalPage();
+      }
+    });
+
+    // Botão de minimizar da "janela"
+    winMin.addEventListener("click", () => {
+      if (appEl.style.display === "none") {
+        appEl.style.display = "block";
+      } else {
+        appEl.style.display = "none";
+      }
+    });
+
+    // Botão de fechar da "janela"
+    winClose.addEventListener("click", () => {
+      alert("Nice try. You can't close this love window that easy. 💘");
+    });
+
+    // Tela final com mensagem de perdão
+    function showFinalPage() {
+      const existingFinal = document.getElementById("screen-final");
+      if (existingFinal) existingFinal.remove();
+
+      const screenFinal = document.createElement("div");
+      screenFinal.className = "screen active";
+      screenFinal.id = "screen-final";
+      screenFinal.innerHTML = `
+        <p class="reason-text" style="margin-top: 20px; font-size: 10px; line-height: 1.8;">
+          I hope you can forgive me.<br><br>
+          Take your time, call me or text me when you're ready.<br><br>
+          I love you so much.
+        </p>
+
+        <div class="center" style="margin-top: 20px;">
+          <button class="btn" id="btn-restart">Restart</button>
+        </div>
+      `;
+
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.querySelector(".app").appendChild(screenFinal);
+
+      document.getElementById("btn-restart").addEventListener("click", () => {
+        screenFinal.remove();
+        currentIndex = 0;
+        showScreen("screen-reasons");
+        updateReason();
+      });
+    }
+  </script>
+</body>
+</html>

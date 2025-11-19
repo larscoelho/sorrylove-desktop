@@ -1,0 +1,33 @@
+{
+  "name": "sorrylove",
+  "version": "1.0.0",
+  "description": "A tiny pixel love app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --mac dmg"
+  },
+  "author": "Larissa",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.lari.sorrylove",
+    "productName": "SorryLove",
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.games"
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "img/**/*",
+      "audio/**/*",
+      "package.json"
+    ]
+  }
+}
