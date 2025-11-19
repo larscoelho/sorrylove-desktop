@@ -4,29 +4,32 @@ on:
   workflow_dispatch:        # permite rodar manualmente
   push:
     tags:
-      - 'v*'                # permite rodar quando você cria uma tag
+      - 'v*'                # também roda quando você criar uma tag
 
 jobs:
-  build:
+  build-mac:
     runs-on: macos-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build macOS app
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: npm run dist
 
       - name: Upload DMG artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4   # <--- AQUI AGORA É V4
         with:
           name: SorryLove-macOS
           path: dist/*.dmg
